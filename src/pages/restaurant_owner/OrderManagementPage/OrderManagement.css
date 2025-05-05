@@ -1,0 +1,46 @@
+.order-management-container {
+  margin-left: 0; /* Default for mobile */
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.order-management-heading {
+  font-weight: 700;
+  color: #343a40;
+  margin-bottom: 1.5rem;
+}
+
+.order-table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+.order-table td {
+  vertical-align: middle;
+}
+
+.item-list {
+  font-size: 0.9em;
+  padding-left: 0; /* Remove default padding */
+}
+
+/* Adjust layout for sidebar on larger screens */
+@media (min-width: 768px) {
+  .order-management-container {
+    margin-left: 250px; /* Adjust for sidebar width */
+    width: calc(100% - 250px);
+  }
+}
+
+@media (max-width: 767px) {
+  .order-management-container {
+     margin-top: 3rem; /* Add space below mobile toggle */
+     width: 100%;
+  }
+  .order-table {
+    font-size: 0.9rem; /* Smaller font on mobile */
+  }
+  .order-table td, .order-table th {
+    padding: 0.5rem 0.4rem; /* Reduce padding on mobile */
+  }
+}

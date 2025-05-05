@@ -26,7 +26,11 @@ const Sidebar = () => {
 
   return (
     <>
-      <Button variant="primary" className="d-md-none sidebar-toggle" onClick={handleShow}>
+      <Button
+        variant="primary"
+        className="d-md-none sidebar-toggle"
+        onClick={handleShow}
+      >
         <i className="bi bi-list"></i> Menu
       </Button>
 
@@ -45,7 +49,21 @@ const Sidebar = () => {
           <Nav.Link as={Link} to="/cart" className={isActive("/cart")}>
             <i className="bi bi-cart"></i> Cart
           </Nav.Link>
-          <Nav.Link as={Link} to="/orders" className={isActive("/orders")}>
+          {state.user && state.user.role === "restaurant-owner" && (
+            <Nav.Link
+              as={Link}
+              to="/order-management"
+              className={isActive("/order-management")}
+            >
+              <i className="bi bi-bag"></i> Order Management
+            </Nav.Link>
+          )}
+          {state.user && state.user.role === "user" && (
+            <Nav.Link as={Link} to="/my-orders" className={isActive("/orders")}>
+              <i className="bi bi-bag"></i> My Orders
+            </Nav.Link>
+          )}
+          <Nav.Link as={Link} to="/my-orders" className={isActive("/orders")}>
             <i className="bi bi-bag"></i> My Orders
           </Nav.Link>
           <Nav.Link as={Link} to="/profile" className={isActive("/profile")}>
@@ -79,7 +97,13 @@ const Sidebar = () => {
             <Nav.Link as={Link} to="/profile" onClick={handleClose}>
               <i className="bi bi-person"></i> Profile
             </Nav.Link>
-            <Nav.Link onClick={() => { handleLogout(); handleClose(); }} className="logout-link">
+            <Nav.Link
+              onClick={() => {
+                handleLogout();
+                handleClose();
+              }}
+              className="logout-link"
+            >
               <i className="bi bi-box-arrow-right"></i> Logout
             </Nav.Link>
           </Nav>

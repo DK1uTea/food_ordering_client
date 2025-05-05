@@ -1,0 +1,37 @@
+.menu-container {
+  margin-left: 0; /* Default for mobile */
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.menu-heading {
+  font-weight: 700;
+  color: #343a40;
+  margin-bottom: 1.5rem;
+}
+
+.restaurant-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  border: none;
+  border-radius: 8px;
+}
+
+.restaurant-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Adjust layout for sidebar on larger screens */
+@media (min-width: 768px) {
+  .menu-container {
+    margin-left: 250px; /* Adjust for sidebar width */
+    width: calc(100% - 250px);
+  }
+}
+
+@media (max-width: 767px) {
+  .menu-container {
+     margin-top: 3rem; /* Add space below mobile toggle */
+     width: 100%;
+  }
+}

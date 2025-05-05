@@ -50,7 +50,7 @@ const Home = () => {
       title: "Order History",
       icon: "bi-clock-history",
       description: "View your previous orders",
-      path: "/orders",
+      path: "/my-orders",
       color: "info"
     }
   ];

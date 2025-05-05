@@ -5,6 +5,7 @@ import {
   useEffect,
   useReducer,
 } from "react";
+import restaurantService from "../services/restaurantService"; // Add this import
 
 // Initial state for the authentication context
 const initialState = {
@@ -109,52 +110,50 @@ const authReducer = (state, action) => {
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, undefined, initAuth);
 
-  // const checkAuth = useCallback(() => {
-  //   try {
-  //     console.log("Running checkAuth...");
-  //     dispatch({ type: "SET_LOADING", payload: { isLoading: true } });
+  // Add this effect to fetch restaurant data for restaurant owners
+  useEffect(() => {
+    const fetchOwnerRestaurantData = async () => {
+      // Check if user is authenticated and is a restaurant owner but doesn't have restaurant ID
+      if (
+        state.isAuthenticated && 
+        state.user && 
+        state.user.role === "restaurant-owner" && 
+        !state.user.restaurant
+      ) {
+        try {
+          console.log("Fetching restaurant for owner...");
+          const restaurantData = await restaurantService.getOwnerRestaurant();
+          
+          if (restaurantData && restaurantData._id) {
+            // Update the user with restaurant ID
+            const updatedUser = {
+              ...state.user,
+              restaurant: restaurantData._id
+            };
+            
+            // Update localStorage for persistence
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+            
+            // Update state
+            dispatch({
+              type: "LOGIN_SUCCESS",
+              payload: { user: updatedUser }
+            });
+            
+            console.log("Restaurant data fetched and saved:", restaurantData._id);
+          } else {
+            console.error("No restaurant found for this owner");
+          }
+        } catch (error) {
+          console.error("Error fetching owner's restaurant:", error);
+        }
+      }
+    };
+    
+    fetchOwnerRestaurantData();
+  }, [state.isAuthenticated, state.user?.role]);
 
-  //     const token = localStorage.getItem("token");
-  //     const userDataStr = localStorage.getItem("user");
-
-  //     if (!token) {
-  //       dispatch({ type: "LOGOUT" });
-  //       return;
-  //     }
-
-  //     if (userDataStr) {
-  //       try {
-  //         const userData = JSON.parse(userDataStr);
-  //         dispatch({ type: "LOGIN_SUCCESS", payload: { user: userData } });
-  //         return;
-  //       } catch (error) {
-  //         dispatch({
-  //           type: "LOGIN_FAILURE",
-  //           payload: { error: "Failed to parse user data" },
-  //         });
-  //         console.error("Failed to parse user data:", error);
-  //       }
-  //     }
-
-  //     if (token && !userDataStr) {
-  //       dispatch({ type: "LOGOUT" });
-  //       return;
-  //     }
-  //   } catch (error) {
-  //     console.error("Error in checkAuth:", error);
-  //     dispatch({
-  //       type: "LOGIN_FAILURE",
-  //       payload: { error: "An error occurred while checking authentication" },
-  //     });
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   if (state.isLoading) {
-  //     checkAuth();
-  //   }
-  // }, [checkAuth]);
-
+  // Your existing debug effect
   useEffect(() => {
     console.log("Auth state changed:", state);
   }, [state]);
