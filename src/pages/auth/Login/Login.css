@@ -1,0 +1,32 @@
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.login-card {
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border: none;
+  width: 100%;
+}
+
+.login-card .card-body {
+  padding: 2.5rem;
+}
+
+/* Ensure column maintains proper width when inside flex container */
+.login-container .col-md-6 {
+  width: 100%;
+  max-width: 500px;
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    margin-top: 2rem;
+  }
+  
+  .login-card .card-body {
+    padding: 1.5rem;
+  }
+}

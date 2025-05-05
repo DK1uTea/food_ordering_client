@@ -1,0 +1,40 @@
+.register-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.register-card {
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border: none;
+  width: 100%;
+}
+
+.register-card .card-body {
+  padding: 2.5rem;
+}
+
+.register-card h5 {
+  color: #495057;
+  font-weight: 600;
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 0.5rem;
+}
+
+/* Ensure column maintains proper width when inside flex container */
+.register-container .col-lg-8,
+.register-container .col-md-10 {
+  width: 100%;
+  max-width: 800px;
+}
+
+@media (max-width: 768px) {
+  .register-container {
+    margin-top: 2rem;
+  }
+  
+  .register-card .card-body {
+    padding: 1.5rem;
+  }
+}

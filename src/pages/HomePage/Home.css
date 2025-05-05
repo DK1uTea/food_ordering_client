@@ -1,0 +1,101 @@
+.home-container {
+  margin-left: 0;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+/* Welcome section */
+.welcome-heading {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #343a40;
+  margin-bottom: 0.5rem;
+}
+
+.welcome-subheading {
+  font-size: 1.2rem;
+  color: #6c757d;
+}
+
+/* Section titles */
+.section-title {
+  position: relative;
+  font-weight: 600;
+  color: #343a40;
+  padding-bottom: 0.5rem;
+}
+
+.section-title:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 60px;
+  background-color: #0d6efd;
+}
+
+/* Featured Carousel */
+.featured-carousel {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.carousel-img {
+  height: 300px;
+  object-fit: cover;
+}
+
+.carousel-caption {
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 8px;
+  padding: 15px;
+  bottom: 20px;
+}
+
+/* Quick Action Cards */
+.quick-action-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-decoration: none;
+  border: none;
+  border-radius: 10px;
+}
+
+.quick-action-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.action-icon {
+  font-size: 2.5rem;
+}
+
+/* Promo Card */
+.promo-card {
+  background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+  border-radius: 10px;
+}
+
+.promo-icon {
+  font-size: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #dc3545;
+}
+
+/* Make content area adjust for sidebar */
+@media (min-width: 768px) {
+  .home-container {
+    margin-left: 250px;
+    min-width: calc(100% - 250px);
+  }
+}
+
+@media (max-width: 768px) {
+  .home-container {
+    margin-top: 3rem;
+    width: 100%;
+  }
+}
