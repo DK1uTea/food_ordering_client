@@ -1,0 +1,47 @@
+.order-history-container {
+  margin-left: 0; /* Default for mobile */
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.order-history-heading {
+  font-weight: 700;
+  color: #343a40;
+  margin-bottom: 1.5rem;
+}
+
+.order-accordion-item {
+  border: 1px solid #dee2e6;
+  border-radius: 0.375rem; /* Match Bootstrap's default border-radius */
+  overflow: hidden; /* Ensures children respect the border radius */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.order-accordion-item .accordion-header button {
+  font-weight: 500;
+}
+
+.order-accordion-item .accordion-body {
+  background-color: #f8f9fa; /* Slightly different background for body */
+}
+
+.order-accordion-item .accordion-body h6 {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+/* Adjust layout for sidebar on larger screens */
+@media (min-width: 768px) {
+  .order-history-container {
+    margin-left: 250px; /* Adjust for sidebar width */
+    width: calc(100% - 250px);
+  }
+}
+
+@media (max-width: 767px) {
+  .order-history-container {
+     margin-top: 3rem; /* Add space below mobile toggle */
+     width: 100%;
+  }
+}
