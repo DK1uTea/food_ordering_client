@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api/restaurants/";
+const API_URL = "http://localhost:3000/api/restaurants";
 
 const restaurantApi = axios.create({
     baseURL: API_URL,
@@ -31,7 +31,7 @@ const restaurantService = {
      */
     async getRestaurantMenu(restaurantId) {
         try {
-            const res = await restaurantApi.get(`api/restaurants/${restaurantId}/menus`);
+            const res = await restaurantApi.get(`/api/restaurants/${restaurantId}/menus`);
             console.log("Restaurant menu response:", res.data);
             return res.data.data;
         } catch (error) {

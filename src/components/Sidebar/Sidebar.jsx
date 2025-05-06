@@ -15,14 +15,17 @@ const Sidebar = () => {
 
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
-    localStorage.removeItem("token"); // Remove token from localStorage
-    localStorage.removeItem("user"); // Remove user data from localStorage
-    navigate("/login"); // Redirect to login page
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/login");
   };
 
   const isActive = (path) => {
     return location.pathname === path ? "active" : "";
   };
+
+  // For debugging
+  console.log("Current user role:", state?.user?.role);
 
   return (
     <>
@@ -43,12 +46,22 @@ const Sidebar = () => {
           <Nav.Link as={Link} to="/home" className={isActive("/home")}>
             <i className="bi bi-house-door"></i> Home
           </Nav.Link>
-          <Nav.Link as={Link} to="/menu" className={isActive("/menu")}>
-            <i className="bi bi-card-list"></i> Menu
-          </Nav.Link>
-          <Nav.Link as={Link} to="/cart" className={isActive("/cart")}>
-            <i className="bi bi-cart"></i> Cart
-          </Nav.Link>
+          
+          {/* Only show Menu for normal users */}
+          {state.user && state.user.role === "user" && (
+            <Nav.Link as={Link} to="/menu" className={isActive("/menu")}>
+              <i className="bi bi-card-list"></i> Menu
+            </Nav.Link>
+          )}
+          
+          {/* Only show Cart for normal users */}
+          {state.user && state.user.role === "user" && (
+            <Nav.Link as={Link} to="/cart" className={isActive("/cart")}>
+              <i className="bi bi-cart"></i> Cart
+            </Nav.Link>
+          )}
+          
+          {/* Only show Order Management for restaurant owners */}
           {state.user && state.user.role === "restaurant-owner" && (
             <Nav.Link
               as={Link}
@@ -58,24 +71,25 @@ const Sidebar = () => {
               <i className="bi bi-bag"></i> Order Management
             </Nav.Link>
           )}
+          
+          {/* Only show My Orders for normal users */}
           {state.user && state.user.role === "user" && (
-            <Nav.Link as={Link} to="/my-orders" className={isActive("/orders")}>
+            <Nav.Link as={Link} to="/my-orders" className={isActive("/my-orders")}>
               <i className="bi bi-bag"></i> My Orders
             </Nav.Link>
           )}
-          <Nav.Link as={Link} to="/my-orders" className={isActive("/orders")}>
-            <i className="bi bi-bag"></i> My Orders
-          </Nav.Link>
+          
           <Nav.Link as={Link} to="/profile" className={isActive("/profile")}>
             <i className="bi bi-person"></i> Profile
           </Nav.Link>
+          
           <Nav.Link onClick={handleLogout} className="logout-link">
             <i className="bi bi-box-arrow-right"></i> Logout
           </Nav.Link>
         </Nav>
       </div>
 
-      {/* Offcanvas sidebar for mobile */}
+      {/* Offcanvas sidebar for mobile - Apply the same conditional logic */}
       <Offcanvas show={show} onHide={handleClose} className="mobile-sidebar">
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Food Order</Offcanvas.Title>
@@ -85,18 +99,39 @@ const Sidebar = () => {
             <Nav.Link as={Link} to="/home" onClick={handleClose}>
               <i className="bi bi-house-door"></i> Home
             </Nav.Link>
-            <Nav.Link as={Link} to="/menu" onClick={handleClose}>
-              <i className="bi bi-card-list"></i> Menu
-            </Nav.Link>
-            <Nav.Link as={Link} to="/cart" onClick={handleClose}>
-              <i className="bi bi-cart"></i> Cart
-            </Nav.Link>
-            <Nav.Link as={Link} to="/orders" onClick={handleClose}>
-              <i className="bi bi-bag"></i> My Orders
-            </Nav.Link>
+            
+            {/* Only show Menu for normal users */}
+            {state.user && state.user.role === "user" && (
+              <Nav.Link as={Link} to="/menu" onClick={handleClose}>
+                <i className="bi bi-card-list"></i> Menu
+              </Nav.Link>
+            )}
+            
+            {/* Only show Cart for normal users */}
+            {state.user && state.user.role === "user" && (
+              <Nav.Link as={Link} to="/cart" onClick={handleClose}>
+                <i className="bi bi-cart"></i> Cart
+              </Nav.Link>
+            )}
+            
+            {/* Only show Order Management for restaurant owners */}
+            {state.user && state.user.role === "restaurant-owner" && (
+              <Nav.Link as={Link} to="/order-management" onClick={handleClose}>
+                <i className="bi bi-bag"></i> Order Management
+              </Nav.Link>
+            )}
+            
+            {/* Only show My Orders for normal users */}
+            {state.user && state.user.role === "user" && (
+              <Nav.Link as={Link} to="/my-orders" onClick={handleClose}>
+                <i className="bi bi-bag"></i> My Orders
+              </Nav.Link>
+            )}
+            
             <Nav.Link as={Link} to="/profile" onClick={handleClose}>
               <i className="bi bi-person"></i> Profile
             </Nav.Link>
+            
             <Nav.Link
               onClick={() => {
                 handleLogout();
