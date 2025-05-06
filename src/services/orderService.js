@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api/orders/"; // Ensure this is correct
+const API_URL = "http://localhost:3000/api/orders"; // Ensure this is correct
 
 // Use a single Axios instance for order-related requests
 const orderApi = axios.create({
-  baseURL: "http://localhost:3000/api/orders", // Base URL for the server
+  baseURL: API_URL, // Base URL for the server
   headers: {
     // Dynamic token retrieval
     get Authorization() {
