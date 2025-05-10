@@ -2,13 +2,6 @@ import axios from "axios";
 
 const API_URL = "http://localhost:3000/api/users/api/v1/auth/";
 
-const authApi = axios.create({
-  baseURL: API_URL,
-  header: {
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
-  },
-});
-
 const authService = {
   /**
    * login user

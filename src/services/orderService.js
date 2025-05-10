@@ -2,15 +2,30 @@ import axios from "axios";
 
 const API_URL = "http://localhost:3000/api/orders"; // Ensure this is correct
 const token = localStorage.getItem("token");
-console.log("Token in orderService:", token);
 
 // Use a single Axios instance for order-related requests
 const orderApi = axios.create({
   baseURL: API_URL, // Base URL for the server
   headers: {
-    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
   },
 });
+
+// Add request interceptor to set Authorization header dynamically
+orderService.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    } else {
+      console.warn("No token found in localStorage");
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 const orderService = {
   /**
@@ -52,7 +67,7 @@ const orderService = {
       const res = await orderApi.get("/api/orders/my-orders");
       console.log("Order history response:", res.data);
       // Adjust based on actual response structure
-      return res.data.data || res.data;
+      return res.data.data;
     } catch (error) {
       console.error(
         "Get order history error details:",
