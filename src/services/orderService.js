@@ -1,15 +1,14 @@
 import axios from "axios";
 
 const API_URL = "http://localhost:3000/api/orders"; // Ensure this is correct
+const token = localStorage.getItem("token");
+console.log("Token in orderService:", token);
 
 // Use a single Axios instance for order-related requests
 const orderApi = axios.create({
   baseURL: API_URL, // Base URL for the server
   headers: {
-    // Dynamic token retrieval
-    get Authorization() {
-      return `Bearer ${localStorage.getItem("token")}`;
-    }
+    Authorization: `Bearer ${token}`,
   },
 });
 
@@ -25,15 +24,21 @@ const orderService = {
     try {
       const reqData = {
         restaurantId,
-        items
+        items,
       };
       // Use relative path if baseURL is set correctly
-      const res = await orderApi.post(`/api/orders`, reqData); 
+      const res = await orderApi.post(`/api/orders`, reqData);
       console.log("Order response:", res.data);
       return res.data;
     } catch (error) {
-      console.error("Order placement error details:", error.response?.data || error.message);
-      throw new Error("Order placement failed: " + (error.response?.data?.message || error.message));
+      console.error(
+        "Order placement error details:",
+        error.response?.data || error.message
+      );
+      throw new Error(
+        "Order placement failed: " +
+          (error.response?.data?.message || error.message)
+      );
     }
   },
 
@@ -44,13 +49,19 @@ const orderService = {
   async getOrderHistory() {
     try {
       // Use relative path
-      const res = await orderApi.get("/api/orders/my-orders"); 
+      const res = await orderApi.get("/api/orders/my-orders");
       console.log("Order history response:", res.data);
       // Adjust based on actual response structure
-      return res.data.data || res.data; 
+      return res.data.data || res.data;
     } catch (error) {
-      console.error("Get order history error details:", error.response?.data || error.message);
-      throw new Error("Failed to fetch order history: " + (error.response?.data?.message || error.message));
+      console.error(
+        "Get order history error details:",
+        error.response?.data || error.message
+      );
+      throw new Error(
+        "Failed to fetch order history: " +
+          (error.response?.data?.message || error.message)
+      );
     }
   },
 
@@ -62,13 +73,21 @@ const orderService = {
   async getPendingRestaurantOrders(restaurantId) {
     try {
       // Use relative path
-      const res = await orderApi.get(`/api/orders/restaurant/${restaurantId}/pending`); 
+      const res = await orderApi.get(
+        `/api/orders/restaurant/${restaurantId}/pending`
+      );
       console.log("Restaurant orders response:", res.data.data);
       // Adjust based on actual response structure
-      return res.data.data
+      return res.data.data;
     } catch (error) {
-      console.error("Get restaurant orders error details:", error.response?.data || error.message);
-      throw new Error("Failed to fetch restaurant orders: " + (error.response?.data?.message || error.message));
+      console.error(
+        "Get restaurant orders error details:",
+        error.response?.data || error.message
+      );
+      throw new Error(
+        "Failed to fetch restaurant orders: " +
+          (error.response?.data?.message || error.message)
+      );
     }
   },
 
@@ -80,7 +99,9 @@ const orderService = {
    */
   async getRestaurantOrderById(restaurantId, orderId) {
     try {
-      const res = await orderApi.get(`/api/orders/restaurant/${restaurantId}/orders/${orderId}`);
+      const res = await orderApi.get(
+        `/api/orders/restaurant/${restaurantId}/orders/${orderId}`
+      );
       return res.data.data;
     } catch (error) {
       throw new Error("Failed to fetch order details: " + error.message);
@@ -98,12 +119,22 @@ const orderService = {
     try {
       const reqData = { status };
       // Use relative path, assuming endpoint is like /api/orders/:orderId/status
-      const res = await orderApi.put(`/api/orders/restaurant/${restaurantId}/orders/${orderId}/status`, reqData); 
+      const res = await orderApi.put(
+        `/api/orders/restaurant/${restaurantId}/orders/${orderId}/status`,
+        reqData
+      );
       console.log("Update order status response:", res.data);
       return res.data;
     } catch (error) {
-      console.error("Update order status error details:", error.response?.data || error.message);
-      throw new Error(`Failed to update order status: ${error.response?.data?.message || error.message}`);
+      console.error(
+        "Update order status error details:",
+        error.response?.data || error.message
+      );
+      throw new Error(
+        `Failed to update order status: ${
+          error.response?.data?.message || error.message
+        }`
+      );
     }
   },
 };
