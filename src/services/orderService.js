@@ -1,7 +1,6 @@
 import axios from "axios";
 
 const API_URL = "http://localhost:3000/api/orders"; // Ensure this is correct
-const token = localStorage.getItem("token");
 
 // Use a single Axios instance for order-related requests
 const orderApi = axios.create({
@@ -12,7 +11,7 @@ const orderApi = axios.create({
 });
 
 // Add request interceptor to set Authorization header dynamically
-orderService.interceptors.request.use(
+orderApi.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
     if (token) {
