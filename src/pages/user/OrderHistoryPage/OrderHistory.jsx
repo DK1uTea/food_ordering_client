@@ -86,8 +86,8 @@ const OrderHistory = () => {
                       <h6>Items:</h6>
                       <ListGroup variant="flush">
                         {order.items?.map((item) => (
-                          <ListGroup.Item key={item.menuItem?._id || item._id} className="d-flex justify-content-between">
-                            <span>{item.menuItem?.name || 'Item Name Unavailable'} (x{item.quantity})</span>
+                          <ListGroup.Item key={item.menuItemId} className="d-flex justify-content-between">
+                            <span>{item.name || 'Item Name Unavailable'} (x{item.quantity})</span>
                             <span>${(item.price * item.quantity).toFixed(2)}</span>
                           </ListGroup.Item>
                         ))}
