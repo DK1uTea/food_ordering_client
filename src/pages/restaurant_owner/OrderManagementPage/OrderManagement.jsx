@@ -1,57 +1,48 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Container, Row, Col, Card, Alert, Spinner, Table, Button, Badge } from 'react-bootstrap';
-import { useAuth } from '../../../contexts/AuthContext';
+import { useOwnerRestaurant } from '../../../hooks/useOwnerRestaurant';
 import orderService from '../../../services/orderService';
-import './OrderManagement.css'; // We'll create this CSS file
+import './OrderManagement.css';
 
 const OrderManagement = () => {
-  const { state: authState } = useAuth();
+  const { restaurant, isLoading: isLoadingRestaurant, error: restaurantError } = useOwnerRestaurant();
   const [orders, setOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   
-  // Assuming the restaurant ID is stored in the user object after login
-  // Adjust 'restaurant' based on your actual user object structure
-  const restaurantId = authState.user?.restaurant; 
+  // Get restaurant ID from the hook result
+  const restaurantId = restaurant?._id;
 
   const fetchRestaurantOrders = useCallback(async () => {
-    if (!restaurantId) {
-      setError("Restaurant ID not found for the current user.");
-      setIsLoading(false);
+    // Don't try to fetch orders if restaurant data is still loading
+    if (isLoadingRestaurant || !restaurantId) {
       return;
     }
+    
     setIsLoading(true);
     setError('');
     try {
       const pendingOrders = await orderService.getPendingRestaurantOrders(restaurantId);
-      // Filter for orders that need action (e.g., 'pending')
-      // const pendingOrders = (data || []).filter(order => order.status === 'pending');
-      setOrders(pendingOrders.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))); // Oldest first
+      setOrders(pendingOrders.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)));
     } catch (err) {
       setError(`Failed to fetch orders: ${err.message}`);
       console.error("Fetch restaurant orders error:", err);
     } finally {
       setIsLoading(false);
     }
-  }, [restaurantId]);
+  }, [restaurantId, isLoadingRestaurant]);
 
   useEffect(() => {
     fetchRestaurantOrders();
   }, [fetchRestaurantOrders]);
 
   const handleUpdateStatus = async (orderId, newStatus) => {
-    // Optimistic UI update (optional)
-    // setOrders(prevOrders => prevOrders.filter(order => order._id !== orderId)); 
-    
     try {
-        // Ensure updateOrderStatus exists in orderService
         await orderService.updateOrderStatus(restaurantId, orderId, newStatus); 
-        // Refetch orders after update to get the latest list
         fetchRestaurantOrders(); 
     } catch (err) {
         setError(`Failed to update order ${orderId} to ${newStatus}: ${err.message}`);
         console.error("Update order status error:", err);
-        // Revert optimistic update if it failed (if implemented)
     }
   };
 
@@ -61,6 +52,29 @@ const OrderManagement = () => {
       hour: '2-digit', minute: '2-digit'
     });
   };
+
+  // Show specific loading state for restaurant data
+  if (isLoadingRestaurant) {
+    return (
+      <Container className="order-management-container py-4">
+        <div className="text-center">
+          <Spinner animation="border" role="status" />
+          <p className="mt-2">Loading your restaurant information...</p>
+        </div>
+      </Container>
+    );
+  }
+
+  // Show error if restaurant couldn't be loaded
+  if (restaurantError || (!isLoadingRestaurant && !restaurantId)) {
+    return (
+      <Container className="order-management-container py-4">
+        <Alert variant="danger">
+          Could not load your restaurant information. Please contact support.
+        </Alert>
+      </Container>
+    );
+  }
 
   return (
     <Container className="order-management-container py-4">
@@ -90,7 +104,7 @@ const OrderManagement = () => {
                   <tr>
                     <th>Order ID</th>
                     <th>Time</th>
-                    <th>Customer</th> {/* Assuming customer info is available */}
+                    <th>Customer</th>
                     <th>Items</th>
                     <th>Total</th>
                     <th>Actions</th>
@@ -101,7 +115,7 @@ const OrderManagement = () => {
                     <tr key={order._id}>
                       <td>{order._id.substring(order._id.length - 6)}</td>
                       <td>{formatDate(order.createdAt)}</td>
-                      <td>{order.customerId || 'N/A'}</td> {/* Adjust based on user data in order */}
+                      <td>{order.customerId || 'N/A'}</td>
                       <td>
                         <ul className="list-unstyled mb-0 item-list">
                           {order.items?.map(item => (
@@ -117,7 +131,7 @@ const OrderManagement = () => {
                           variant="success" 
                           size="sm" 
                           className="me-2 mb-1"
-                          onClick={() => handleUpdateStatus(order._id, 'CONFIRMED')} // Or 'accepted'
+                          onClick={() => handleUpdateStatus(order._id, 'CONFIRMED')}
                         >
                           Accept
                         </Button>

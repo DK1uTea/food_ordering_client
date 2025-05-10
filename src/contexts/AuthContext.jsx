@@ -110,49 +110,6 @@ const authReducer = (state, action) => {
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, undefined, initAuth);
 
-  // Add this effect to fetch restaurant data for restaurant owners
-  useEffect(() => {
-    const fetchOwnerRestaurantData = async () => {
-      // Check if user is authenticated and is a restaurant owner but doesn't have restaurant ID
-      if (
-        state.isAuthenticated && 
-        state.user && 
-        state.user.role === "restaurant-owner" && 
-        !state.user.restaurant
-      ) {
-        try {
-          console.log("Fetching restaurant for owner...");
-          const restaurantData = await restaurantService.getOwnerRestaurant();
-          
-          if (restaurantData && restaurantData._id) {
-            // Update the user with restaurant ID
-            const updatedUser = {
-              ...state.user,
-              restaurant: restaurantData._id
-            };
-            
-            // Update localStorage for persistence
-            localStorage.setItem('user', JSON.stringify(updatedUser));
-            
-            // Update state
-            dispatch({
-              type: "LOGIN_SUCCESS",
-              payload: { user: updatedUser }
-            });
-            
-            console.log("Restaurant data fetched and saved:", restaurantData._id);
-          } else {
-            console.error("No restaurant found for this owner");
-          }
-        } catch (error) {
-          console.error("Error fetching owner's restaurant:", error);
-        }
-      }
-    };
-    
-    fetchOwnerRestaurantData();
-  }, [state.isAuthenticated, state.user?.role]);
-
   // Your existing debug effect
   useEffect(() => {
     console.log("Auth state changed:", state);
