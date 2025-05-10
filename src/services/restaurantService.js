@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000";
+const API_URL = "http://localhost:3000/api/restaurants"; // Ensure this is correct
 
 // Create Axios instance without setting Authorization header initially
 const restaurantApi = axios.create({
