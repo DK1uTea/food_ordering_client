@@ -16,6 +16,8 @@ import MenuDetail from "./pages/user/MenuDetailPage/MenuDetail";
 import OrderHistory from "./pages/user/OrderHistoryPage/OrderHistory";
 import Cart from "./pages/user/CartPage/Cart";
 import OrderManagement from "./pages/restaurant_owner/OrderManagementPage/OrderManagement";
+import { ToastContainer, toast, Bounce } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 // Create a protected route component
 const ProtectedRoute = ({ children }) => {
@@ -148,6 +150,19 @@ function App() {
           }
         />
       </Routes>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+      />
     </Router>
   );
 }

@@ -82,13 +82,13 @@ const OrderHistory = () => {
                     <Accordion.Body>
                       {/* Optional: Display Restaurant Name if available */}
                       {/* {order.restaurant && <p><strong>Restaurant:</strong> {order.restaurant.name}</p>} */}
-                      <p><strong>Total Amount:</strong> ${order.totalAmount?.toFixed(2)}</p>
+                      <p><strong>Total Amount:</strong> {order.totalAmount?.toFixed(2)}đ</p>
                       <h6>Items:</h6>
                       <ListGroup variant="flush">
                         {order.items?.map((item) => (
                           <ListGroup.Item key={item.menuItemId} className="d-flex justify-content-between">
                             <span>{item.name || 'Item Name Unavailable'} (x{item.quantity})</span>
-                            <span>${(item.price * item.quantity).toFixed(2)}</span>
+                            <span>{(item.price * item.quantity).toFixed(2)}đ</span>
                           </ListGroup.Item>
                         ))}
                       </ListGroup>

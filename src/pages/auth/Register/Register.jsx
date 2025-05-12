@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
 import authService from '../../../services/authService';
 import './Register.css';
+import { showSuccess } from '../../../utils/toastUtils';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -73,7 +74,8 @@ const Register = () => {
       // Store token in localStorage
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(userData));
-      
+      showSuccess('Registration successful! You are now logged in.');
+      showSuccess('Welcome to Food Order!');
       navigate('/home');
     } catch (err) {
       dispatch({ 

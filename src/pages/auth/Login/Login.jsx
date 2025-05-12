@@ -4,6 +4,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../../contexts/AuthContext';
 import authService from '../../../services/authService';
 import './Login.css';
+import { showError, showInfo, showSuccess } from '../../../utils/toastUtils';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -38,13 +39,15 @@ const Login = () => {
         type: 'LOGIN_SUCCESS', 
         payload: { user: userData } 
       });
-      
+      showSuccess('Login successful!');
+      showSuccess(`Welcome back, ${userData.name}!`);
       navigate(from, { replace: true });
     } catch (err) {
       dispatch({ 
         type: 'LOGIN_FAILURE', 
         payload: { error: err.message } 
       });
+      showError('Login failed. Please check your credentials.');
       setError(err.message);
     }
   };

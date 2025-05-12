@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Alert, Spinner, Table, Button, Badge } from 
 import { useOwnerRestaurant } from '../../../hooks/useOwnerRestaurant';
 import orderService from '../../../services/orderService';
 import './OrderManagement.css';
+import { showSuccess } from '../../../utils/toastUtils';
 
 const OrderManagement = () => {
   const { restaurant, isLoading: isLoadingRestaurant, error: restaurantError } = useOwnerRestaurant();
@@ -39,6 +40,7 @@ const OrderManagement = () => {
   const handleUpdateStatus = async (orderId, newStatus) => {
     try {
         await orderService.updateOrderStatus(restaurantId, orderId, newStatus); 
+        showSuccess(`Order ${orderId} updated to ${newStatus} successfully!`);
         fetchRestaurantOrders(); 
     } catch (err) {
         setError(`Failed to update order ${orderId} to ${newStatus}: ${err.message}`);

@@ -2,6 +2,7 @@
   margin-left: 0; /* Default for mobile */
   padding-top: 2rem;
   padding-bottom: 2rem;
+  min-height: 100vh;
 }
 
 .order-management-heading {
