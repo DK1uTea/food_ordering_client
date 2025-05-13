@@ -127,7 +127,7 @@ const OrderManagement = () => {
                           ))}
                         </ul>
                       </td>
-                      <td>${order.totalAmount?.toFixed(2)}</td>
+                      <td>{order.totalAmount?.toFixed(2)}đ</td>
                       <td>
                         <Button 
                           variant="success" 
